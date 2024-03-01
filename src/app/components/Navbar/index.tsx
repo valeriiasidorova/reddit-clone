@@ -1,5 +1,8 @@
-import { Flex, Image } from '@chakra-ui/react';
+'use client'
+
 import React from 'react';
+import { Flex, Image } from '@chakra-ui/react';
+import SearchInput from './SearchInput';
 
 const Navbar:React.FC = () => {
   return (
@@ -17,6 +20,11 @@ const Navbar:React.FC = () => {
           display={{ base: "none", md: "unset" }} 
         />
       </Flex>
+      <SearchInput />
+      {/* 
+        <RightContent /> –– right-side content in the navbar (log in, notifications, profile menu, etc.)
+        <Directory /> –– dropdown menu
+      */}
     </Flex>
   )
 }
