@@ -15,6 +15,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           <SearchIcon color="gray.400" mb={1}/>
         </InputLeftElement>
         <Input 
+        // TODO: update hover and focus styles
           placeholder="Search Reddit" 
           fontSize="10pt"
           _placeholder={{color: "gray.500"}}
