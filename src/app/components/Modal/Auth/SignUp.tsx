@@ -24,9 +24,9 @@ const SignUp:React.FC = () => {
     if (error) setError("");
     if (signUpForm.password !== signUpForm.confirmPassword) {
       setError("Passwords do not match");
+      return; // bugfix: now it won't submit the form unless the passwords match
     };
     /* TODO: add more validation later (min password length, special characters, email domain, outline incorrect field, disable submit button, etc.) */
-
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
   };
 
