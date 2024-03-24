@@ -4,6 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { authModalState } from '@/atoms/authModalAtom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/clientApp';
+import { FIREBASE_ERRORS } from '@/firebase/errors';
 
 const SignUp:React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -13,7 +14,7 @@ const SignUp:React.FC = () => {
     confirmPassword: "",
   });
 
-  const [ error, setError ] = useState("");
+  const [ error, setError ] = useState(""); // form error
   const [ createUserWithEmailAndPassword, user, loading, userError ] = useCreateUserWithEmailAndPassword(auth);
 
   // Firebase logic
@@ -105,12 +106,9 @@ const SignUp:React.FC = () => {
         }}
         bg="gray.50"
       />
-      {error || 
-        (userError && (
-          <Text color="red" fontSize="10pt" mb={2} ml={4}>
-            {error || userError.message}
-          </Text>
-        ))}
+      <Text color="red" fontSize="10pt" mb={2} ml={4}>
+        {error || FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
       <Button 
         type="submit"
         width="100%"
