@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AbsoluteCenter, Box, Divider, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { authModalState } from '@/atoms/authModalAtom';
+import { auth } from '@/firebase/clientApp';
 import OAuthButtons from './OAuthButtons';
 import AuthInputs from './AuthInputs';
 
 const AuthModal:React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
+  const [user, loading, error] = useAuthState(auth);
 
   const handleClose = () => {
     setModalState((prev) => ({
@@ -14,6 +17,12 @@ const AuthModal:React.FC = () => {
       open: false,
     }));
   };
+
+  useEffect(() => {
+    if(user) handleClose();
+    console.log("user", user);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <>
