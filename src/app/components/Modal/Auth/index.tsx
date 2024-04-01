@@ -6,6 +6,7 @@ import { authModalState } from '@/atoms/authModalAtom';
 import { auth } from '@/firebase/clientApp';
 import OAuthButtons from './OAuthButtons';
 import AuthInputs from './AuthInputs';
+import ResetPassword from './ResetPassword';
 
 const AuthModal:React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -32,7 +33,7 @@ const AuthModal:React.FC = () => {
           <ModalHeader textAlign="center">
             {modalState.view === "login" && "Log In"}
             {modalState.view === "signup" && "Sign Up"}
-            {modalState.view === "resetPassword" && "Reset Password"}
+            {modalState.view === "resetPassword" && "Reset your password"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody
@@ -48,23 +49,28 @@ const AuthModal:React.FC = () => {
               justify="center"
               width="70%"
             >
-              <OAuthButtons />
-              {/* Horizontal line */}
-              <Box position="relative" py={6} width="100%">
-                <Divider borderColor="gray.500" />
-                <AbsoluteCenter 
-                  bg="white" 
-                  px='4' 
-                  fontWeight={600} 
-                  fontSize="12" 
-                  color="gray.500"
-                >
-                  OR
-                </AbsoluteCenter>
-              </Box>
-              <AuthInputs />
-              {/* <ResetPassword /> */}
-            </Flex>
+              {modalState.view !== "resetPassword" ? (
+                <>
+                  <OAuthButtons />
+                  {/* Horizontal line */}
+                  <Box position="relative" py={6} width="100%">
+                    <Divider borderColor="gray.500" />
+                    <AbsoluteCenter 
+                      bg="white" 
+                      px='4' 
+                      fontWeight={600} 
+                      fontSize="12" 
+                      color="gray.500"
+                    >
+                      OR
+                    </AbsoluteCenter>
+                  </Box>
+                  <AuthInputs />
+                </>
+              ) : (
+                <ResetPassword />
+              )}
+            </Flex>  
           </ModalBody>
         </ModalContent>
       </Modal>
