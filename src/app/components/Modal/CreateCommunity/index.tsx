@@ -94,7 +94,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               </Text>
               <Box mt={4} mb={4}>
                 <Text mb={2} fontSize={15} fontWeight={600}>
-                  Community Type
+                  Type
                 </Text>
                 <Stack spacing={2}>
                   <Checkbox

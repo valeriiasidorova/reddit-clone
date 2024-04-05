@@ -31,7 +31,7 @@ const Directory: React.FC = () => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList>
+      <MenuList padding={0}>
         <Communities />
       </MenuList>
     </Menu>

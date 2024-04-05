@@ -13,6 +13,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
       <MenuItem
         width="100%"
         fontSize="10pt"
+        padding={3}
         _hover={{ bg: "gray.100" }}
         onClick={() => setOpen(true)}
       >
