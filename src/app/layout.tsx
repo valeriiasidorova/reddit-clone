@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RecoilContextProvider } from "./recoilContextProvider";
 import { Providers } from "./providers";
 import Navbar from "./components/Navbar/";
 
@@ -15,11 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <Navbar />
-          <main>{children}</main>
-        </Providers>
+        <RecoilContextProvider>
+          <Providers>
+            <Navbar />
+            <main>{children}</main>
+          </Providers>
+        </RecoilContextProvider>
       </body>
     </html>
+    
   );
 };

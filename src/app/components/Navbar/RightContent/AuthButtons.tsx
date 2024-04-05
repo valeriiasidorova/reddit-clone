@@ -1,9 +1,13 @@
-"use client"
+"use client";
 
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
+import { authModalState } from '@/atoms/authModalAtom';
 import { Button } from '@chakra-ui/react';
 
 const AuthButtons:React.FC = () => {
+  const setAuthModalState = useSetRecoilState(authModalState);
+
   return (
     // TODO: update button styles and logic (Sign Up -> Get App)
     <>
@@ -19,7 +23,10 @@ const AuthButtons:React.FC = () => {
           md: "110px",
         }}
         mr={2}
-        // onClick={() => {}}
+        onClick={() => setAuthModalState({ 
+          open: true, 
+          view: "login"
+        })}
       >
         Log In
       </Button>
@@ -34,7 +41,10 @@ const AuthButtons:React.FC = () => {
           md: "110px",
         }}
         mr={2}
-        // onClick={() => {}}
+        onClick={() => setAuthModalState({ 
+          open: true, 
+          view: "signup"
+        })}
       >
         Sign Up
       </Button>
