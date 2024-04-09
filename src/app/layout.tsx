@@ -24,6 +24,5 @@ export default function RootLayout({
         </RecoilContextProvider>
       </body>
     </html>
-    
   );
 };
