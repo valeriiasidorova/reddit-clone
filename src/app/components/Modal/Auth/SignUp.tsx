@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import { useSetRecoilState } from 'recoil';
 import { authModalState } from '@/atoms/authModalAtom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from '@/firebase/clientApp';
+import { auth, firestore } from '@/firebase/clientApp';
+import { User } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { FIREBASE_ERRORS } from '@/firebase/errors';
 
 const SignUp:React.FC = () => {
@@ -15,7 +17,7 @@ const SignUp:React.FC = () => {
   });
 
   const [ error, setError ] = useState(""); // form error
-  const [ createUserWithEmailAndPassword, user, loading, userError ] = useCreateUserWithEmailAndPassword(auth);
+  const [ createUserWithEmailAndPassword, userCred, loading, userError ] = useCreateUserWithEmailAndPassword(auth);
 
   // Firebase logic
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,6 +39,20 @@ const SignUp:React.FC = () => {
       [event.target.name]: event.target.value,
     }))
   };
+
+  // Cloud Functions alternative for adding custom user properties (e.g. karma)
+  const createUserDocument = async (user: User) => {
+    await setDoc(
+      doc(firestore, "users", user.uid),
+      JSON.parse(JSON.stringify(user))
+    );
+  };
+
+  useEffect(() => {
+    if (userCred) {
+      createUserDocument(userCred.user);
+    }
+  }, [userCred]);
 
   return (
     <form onSubmit={onSubmit}>
