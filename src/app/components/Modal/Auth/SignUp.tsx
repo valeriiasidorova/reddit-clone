@@ -126,7 +126,13 @@ const SignUp: React.FC = () => {
         {error ||
           FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
       </Text>
-      <Button type="submit" width="100%" height="36px" mb={2}>
+      <Button
+        width="100%"
+        height="36px"
+        mb={2}
+        type="submit"
+        isLoading={loading}
+      >
         Sign Up
       </Button>
       <Flex fontSize="9pt" justifyContent="center">
