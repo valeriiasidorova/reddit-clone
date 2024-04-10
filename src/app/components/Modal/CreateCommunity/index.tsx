@@ -19,7 +19,11 @@ import {
 } from "@chakra-ui/react";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  runTransaction,
+  serverTimestamp,
+} from "firebase/firestore";
 import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -68,19 +72,42 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     setLoading(true);
     try {
       const communityDocRef = doc(firestore, "communities", communityName);
-      const communityDoc = await getDoc(communityDocRef);
 
-      if (communityDoc.exists()) {
-        throw new Error(
-          `Sorry, r/${communityName} is already taken. Try another name`
+      // wrapping create-community logic in a transaction to make sure every operation within it works
+      // if an operation within the transaction fails, the rest will fail too => community won't be created and stored in DB
+      await runTransaction(firestore, async (transaction) => {
+        // Check if community exists in DB
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(
+            `Sorry, r/${communityName} is already taken. Try another name`
+          );
+        }
+
+        // Create community
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType,
+        });
+
+        // Create `communitySnippet` on user
+        transaction.set(
+          // db path structure: collection – document - collection – document, etc.
+          /* In this case it means: 
+            go to the `users` collection,
+            find the document of the current `user`,
+            find the `communitySnippets` subcollection inside `user`,
+            create a document (communitySnippet) for the new community joined, created, or moderated by this user
+           */
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          // then pass in the data that should be stored inside this `communitySnippet`
+          {
+            communityId: communityName,
+            isModerator: true,
+          }
         );
-      }
-
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType,
       });
     } catch (error: any) {
       console.log("handleCreateCommunity error", error);
