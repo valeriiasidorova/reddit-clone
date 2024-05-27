@@ -3,6 +3,7 @@ import { Community } from "@/atoms/communitiesAtom";
 import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import safeJsonStringify from "safe-json-stringify";
+import NotFound from "@/app/components/Community/NotFound";
 
 type CommunityPageProps = {
   communityData: Community; // atom
@@ -16,7 +17,7 @@ export default async function CommunityPage({
   const getData = await getCommunityData(params.communityId);
 
   if (!getData) {
-    return <div>Community does not exist</div>;
+    return <NotFound />;
   }
 
   return <div>Welcome to {getData?.communityData.id} </div>;
