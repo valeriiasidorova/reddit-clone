@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import safeJsonStringify from "safe-json-stringify";
 import NotFound from "@/app/components/Community/NotFound";
 import Header from "@/app/components/Community/Header";
+import PageLayout from "@/app/components/Community/layout";
 
 type CommunityPageProps = {
   communityData: Community; // atom
@@ -24,7 +25,20 @@ export default async function CommunityPage({
   return (
     <>
       <Header communityData={getData.communityData} />
-      <p>{getData.communityData.id} feed</p>
+      <PageLayout>
+        <>
+          <div>Left Side Content</div>
+          <div>Left Side Content</div>
+          <div>Left Side Content</div>
+          <div>Left Side Content</div>
+        </>
+        <>
+          <div>Right Side Content</div>
+          <div>Right Side Content</div>
+          <div>Right Side Content</div>
+          <div>Right Side Content</div>
+        </>
+      </PageLayout>
     </>
   );
 }
