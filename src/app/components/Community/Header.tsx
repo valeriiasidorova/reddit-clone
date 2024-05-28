@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import useCommunityData from "@/hooks/useCommunityData";
 import { Community } from "@/atoms/communitiesAtom";
 import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import CommunityIcon from "./CommunityIcon";
@@ -8,7 +11,11 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
-  const isJoined = false; // TODO: get this data from communitySnippets
+  const { communityStateValue, onJoinOrLeaveCommunity } = useCommunityData();
+  const isJoined = !!communityStateValue.mySnippets.find(
+    (item) => item.communityId === communityData.id
+  ); // `!!` turns the return value into a boolean
+
   return (
     <Flex direction="column" width="100%" height="146px">
       <Box height="50%" bg="blue.400" />
@@ -31,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
               height="30px"
               pr={6}
               pl={6}
-              /* TODO: onClick={onJoin} */
+              onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
             >
               {isJoined ? "Joined" : "Join"}
             </Button>
