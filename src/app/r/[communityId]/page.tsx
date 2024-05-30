@@ -6,6 +6,7 @@ import safeJsonStringify from "safe-json-stringify";
 import NotFound from "@/app/components/Community/NotFound";
 import Header from "@/app/components/Community/Header";
 import PageLayout from "@/app/components/Community/layout";
+import CreatePostLink from "@/app/components/Community/CreatePostLink";
 
 type CommunityPageProps = {
   communityData: Community; // atom
@@ -27,10 +28,7 @@ export default async function CommunityPage({
       <Header communityData={getData.communityData} />
       <PageLayout>
         <>
-          <div>Left Side Content</div>
-          <div>Left Side Content</div>
-          <div>Left Side Content</div>
-          <div>Left Side Content</div>
+          <CreatePostLink />
         </>
         <>
           <div>Right Side Content</div>
