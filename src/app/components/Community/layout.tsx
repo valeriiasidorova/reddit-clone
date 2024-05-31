@@ -9,7 +9,7 @@ export default function PageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Flex justify="center" p="16px 0" border="1px solid red">
+    <Flex justify="center" p="16px 0">
       {/* content container */}
       <Flex width="95%" justify="center" maxWidth="860px">
         {/* left side content */}
@@ -25,7 +25,6 @@ export default function PageLayout({
           direction="column"
           display={{ base: "none", md: "flex" }}
           flexGrow={1}
-          border="1px solid orange"
         >
           {children && children[1 as keyof typeof children]}
         </Flex>

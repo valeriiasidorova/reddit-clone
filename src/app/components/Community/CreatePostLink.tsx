@@ -1,4 +1,4 @@
-// CreatePostLink leads to Submit page
+// CreatePostLink redirects to SubmitPostPage
 "use client";
 import React from "react";
 import { Flex, Icon, Input } from "@chakra-ui/react";
