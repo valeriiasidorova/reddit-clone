@@ -28,7 +28,7 @@ export default async function CommunityPage({
       <Header communityData={getData.communityData} />
       <PageLayout>
         <>
-          <CreatePostLink />
+          <CreatePostLink communityId={getData.communityData.id} />
         </>
         <>
           <div>Right Side Content</div>

@@ -5,9 +5,23 @@ import { Flex, Icon, Input } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
 import { BsLink45Deg } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { authModalState } from "@/atoms/authModalAtom";
+import { useSetRecoilState } from "recoil";
+import { auth } from "@/firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const CreatePostLink: React.FC = () => {
-  const onClick = () => {};
+const CreatePostLink = ({ communityId }: { communityId: string }) => {
+  const router = useRouter();
+  const [user] = useAuthState(auth);
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const onClick = () => {
+    if (!user) {
+      setAuthModalState({ open: true, view: "login" });
+      return;
+    }
+    router.push(`/r/${communityId}/submit`);
+  };
 
   return (
     <Flex
