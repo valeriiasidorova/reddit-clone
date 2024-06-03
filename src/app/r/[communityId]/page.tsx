@@ -7,6 +7,7 @@ import NotFound from "@/app/components/Community/NotFound";
 import Header from "@/app/components/Community/Header";
 import PageLayout from "@/app/components/Community/layout";
 import CreatePostLink from "@/app/components/Community/CreatePostLink";
+import Posts from "@/app/components/Community/Posts";
 
 type CommunityPageProps = {
   communityData: Community; // atom
@@ -29,6 +30,7 @@ export default async function CommunityPage({
       <PageLayout>
         <>
           <CreatePostLink communityId={getData.communityData.id} />
+          <Posts communityData={getData.communityData}></Posts>
         </>
         <>
           <div>Right Side Content</div>
