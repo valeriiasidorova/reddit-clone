@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Post } from "@/atoms/postsAtom";
-import { Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
+import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -31,6 +31,8 @@ const PostItem: React.FC<PostItemProps> = ({
   onDeletePost,
   onSelectPost,
 }) => {
+  const [loadingImage, setLoadingImage] = useState(true);
+
   dayjs.extend(RelativeTime);
   const postDate = dayjs(post.createdAt?.seconds * 1000).fromNow();
 
@@ -87,11 +89,16 @@ const PostItem: React.FC<PostItemProps> = ({
           </Text>
           <Text fontSize="10pt">{post.body}</Text>
           {post.imageURL && (
-            <Flex justify="center" align="center">
+            <Flex justify="center" align="center" p={2}>
+              {loadingImage && (
+                <Skeleton height="200px" width="100%" borderRadius={4} />
+              )}
               <Image
                 alt="Post Image"
                 src={post.imageURL}
                 maxHeight="460px"
+                display={loadingImage ? "none" : "unset"}
+                onLoad={() => setLoadingImage(false)}
               ></Image>
             </Flex>
           )}
