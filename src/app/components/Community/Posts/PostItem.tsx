@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { Post } from "@/atoms/postsAtom";
-import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Flex,
+  Icon,
+  Image,
+  Skeleton,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -19,7 +29,7 @@ type PostItemProps = {
   userIsCreator: boolean;
   userVoteValue?: number;
   onVote: () => {};
-  onDeletePost: () => {};
+  onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
 
@@ -32,9 +42,27 @@ const PostItem: React.FC<PostItemProps> = ({
   onSelectPost,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
+  const [error, setError] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   dayjs.extend(RelativeTime);
   const postDate = dayjs(post.createdAt?.seconds * 1000).fromNow();
+
+  // call onDelete and provide error handling
+  // TODO: get user's confirmation before deleting
+  const handleDelete = async () => {
+    setLoadingDelete(true);
+    try {
+      const success = await onDeletePost(post); // boolean
+      if (!success) {
+        throw new Error("Failed to delete post");
+      }
+      console.log("Post was successfully deleted");
+    } catch (error: any) {
+      setError(error.message);
+    }
+    setLoadingDelete(false);
+  };
 
   return (
     <Flex
@@ -77,6 +105,12 @@ const PostItem: React.FC<PostItemProps> = ({
         />
       </Flex>
       <Flex direction="column" width="100%">
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            <Text mr={2}>{error}</Text>
+          </Alert>
+        )}
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing={1} align="center" fontSize="9pt">
             {/* TODO: Homepage check */}
@@ -141,10 +175,16 @@ const PostItem: React.FC<PostItemProps> = ({
               borderRadius={4}
               cursor="pointer"
               _hover={{ bg: "gray.200" }}
-              onClick={onDeletePost}
+              onClick={handleDelete}
             >
-              <Icon as={AiOutlineDelete} mr={2} />
-              <Text fontSize="9pt">Delete</Text>
+              {loadingDelete ? (
+                <Spinner size="xs" />
+              ) : (
+                <>
+                  <Icon as={AiOutlineDelete} mr={2} />
+                  <Text fontSize="9pt">Delete</Text>
+                </>
+              )}
             </Flex>
           )}
         </Flex>
