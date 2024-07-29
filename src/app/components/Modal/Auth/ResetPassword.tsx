@@ -11,7 +11,8 @@ const ResetPassword: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
-  const [sendPasswordResetEmail, sending, error] = useSendPasswordResetEmail(auth);
+  const [sendPasswordResetEmail, sending, error] =
+    useSendPasswordResetEmail(auth);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,12 +23,15 @@ const ResetPassword: React.FC = () => {
   return (
     <>
       {success ? (
-        <Text mb={4} fontSize="xs" align="center">We&apos;ve sent a link to the email address associated with your account</Text>
+        <Text mb={4} fontSize="xs" align="center">
+          We&apos;ve sent a link to the email address associated with your
+          account
+        </Text>
       ) : (
         <>
           <Text fontSize="xs" mb={5} align="center">
-            Enter your email address and we&apos;ll send you a link to reset your
-            password
+            Enter your email address and we&apos;ll send you a link to reset
+            your password
           </Text>
           <form onSubmit={onSubmit} style={{ width: "100%" }}>
             <Input
@@ -52,7 +56,9 @@ const ResetPassword: React.FC = () => {
               }}
               bg="gray.50"
             />
-            <Text color="red" fontSize="10pt" mb={2} ml={4}>{error?.message}</Text>
+            <Text color="red" fontSize="10pt" mb={2} ml={4}>
+              {error?.message}
+            </Text>
             <Button
               isLoading={sending}
               type="submit"
@@ -66,32 +72,32 @@ const ResetPassword: React.FC = () => {
         </>
       )}
       <Flex fontSize="9pt" align="center" color="blue.500">
-          <Text
-            fontWeight={700}
-            cursor="pointer"
-            onClick={() =>
-              setAuthModalState((prev) => ({
-                ...prev,
-                view: "login",
-              }))
-            }
-          >
-            LOG IN
-          </Text>
-          <Icon as={BsDot} />
-          <Text
-            fontWeight={700}
-            cursor="pointer"
-            onClick={() =>
-              setAuthModalState((prev) => ({
-                ...prev,
-                view: "signup",
-              }))
-            }
-          >
-            SIGN UP
-          </Text>
-        </Flex>
+        <Text
+          fontWeight={700}
+          cursor="pointer"
+          onClick={() =>
+            setAuthModalState((prev) => ({
+              ...prev,
+              view: "login",
+            }))
+          }
+        >
+          LOG IN
+        </Text>
+        <Icon as={BsDot} />
+        <Text
+          fontWeight={700}
+          cursor="pointer"
+          onClick={() =>
+            setAuthModalState((prev) => ({
+              ...prev,
+              view: "signup",
+            }))
+          }
+        >
+          SIGN UP
+        </Text>
+      </Flex>
     </>
   );
 };
